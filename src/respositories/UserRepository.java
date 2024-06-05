@@ -12,6 +12,7 @@ public class UserRepository {
     //saving Users to DB
     int i=1;
     public void saveUserToDB(Users users) {
+        users.setId(i*1L);
         userDB.put(i, users);
         i++;
     }

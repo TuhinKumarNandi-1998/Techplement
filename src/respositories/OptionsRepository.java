@@ -13,6 +13,8 @@ public class OptionsRepository {
     //saving Option to DB
     int j=1;
     public void saveOptionToDB(Options options) {
+        options.setId(j*1L);
+        options.setQuestionID(j*1L);
         optionDB.put(j, options);
         j++;
     }

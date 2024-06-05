@@ -1,10 +1,7 @@
 package services;
 import exceptions.NotAuthorizedToAddQuestionException;
 import exceptions.NotAuthorizedToRemoveQuestionException;
-import models.Options;
-import models.Questions;
-import models.Roles;
-import models.Users;
+import models.*;
 import respositories.OptionsRepository;
 import respositories.QuestionsRepository;
 import respositories.UserRepository;

@@ -5,7 +5,9 @@ import models.Questions;
 import models.Roles;
 import models.Users;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QuestionsRepository {
@@ -14,8 +16,22 @@ public class QuestionsRepository {
     //saving Question to DB
     int i=1;
     public void saveQuestionToDB(Questions questions) {
+        questions.setId(i*1L);
+        List<Options> options = new ArrayList<>();
+        int j=0;
+        for (Options option : questions.getOptions()) {
+            option.setSequences((char) (97+j));
+            options.add(option);
+            j++;
+        }
+        questions.setOptions(options);
         questionDB.put(i, questions);
         i++;
+    }
+
+    //getting question 1 by 1
+    public Questions getQuestion1By1(int question_no) {
+        return questionDB.get(question_no);
     }
 
     //getting Question from DB

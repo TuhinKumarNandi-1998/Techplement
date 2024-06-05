@@ -11,6 +11,7 @@ public class RolesRepository {
     //saving Roles to DB
     int j=1;
     public void saveRolesToDB(Roles roles) {
+        roles.setId(j*1L);
         rolesDB.put(j, roles);
         j++;
     }

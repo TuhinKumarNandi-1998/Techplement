@@ -1,4 +1,5 @@
 import controllers.QuestionAddAndRemoveController;
+import controllers.QuizPlayController;
 import controllers.UserController;
 import dtos.QuestionRequestDTO;
 import dtos.UserRequestDTO;
@@ -8,13 +9,14 @@ import respositories.QuestionsRepository;
 import respositories.RolesRepository;
 import respositories.UserRepository;
 import services.QuestionAddAndRemoveService;
+import services.QuizPlayService;
 import services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws NotAuthorizedToAddQuestionException {
+    public static void main(String[] args) throws NotAuthorizedToAddQuestionException, InterruptedException {
 
         //Instantiating The classes related to UserService
         UserRepository userRepository = new UserRepository();
@@ -124,6 +126,11 @@ public class Main {
         questionRequestDTO5.setCorrectAnswer("Mitochondrion");
         questionAddAndRemoveController.addQuestionAndOptions(questionRequestDTO5);
 
-      System.out.println(questionsRepository.getQuestionFromDBUsingQuestion("What is the powerhouse of the cell?").getCorrectAnswer().getOption());
+      //System.out.println(questionsRepository.getQuestionFromDBUsingQuestion("What is the powerhouse of the cell?").getCorrectAnswer().getOption());
+
+        QuizPlayService quizPlayService = new QuizPlayService(questionsRepository, optionsRepository);
+        QuizPlayController quizPlayController = new QuizPlayController(quizPlayService);
+
+        quizPlayController.startQuiz();
     }
 }
