@@ -1,6 +1,8 @@
 package controllers;
 
 import dtos.QuestionRequestDTO;
+import exceptions.NotAuthorizedToAddQuestionException;
+import exceptions.NotAuthorizedToRemoveQuestionException;
 import models.Options;
 import models.Questions;
 import services.QuestionAddAndRemoveService;
@@ -15,7 +17,9 @@ public class QuestionAddAndRemoveController {
         this.questionAddAndRemoveService = questionAddAndRemoveService;
     }
 
-    public void addQuestionAndOptions(QuestionRequestDTO questionRequestDTO) {
+    public void addQuestionAndOptions(QuestionRequestDTO questionRequestDTO) throws NotAuthorizedToAddQuestionException {
+        String userName = questionRequestDTO.getUser();
+
         Questions questions = new Questions();
         questions.setQuestion(questionRequestDTO.getQuestions());
 
@@ -27,10 +31,14 @@ public class QuestionAddAndRemoveController {
         }
         questions.setOptions(options);
 
+        Options correctOption = new Options();
+        correctOption.setOption(questionRequestDTO.getCorrectAnswer());
+        questions.setCorrectAnswer(correctOption);
 
+        questionAddAndRemoveService.addQuestionAndOptions(questions, userName);
     }
 
-    public void removeQuestion(QuestionRequestDTO questionRequestDTO) {
-        questionAddAndRemoveService.removeQuestion(questionRequestDTO.getQuestions());
+    public void removeQuestion(QuestionRequestDTO questionRequestDTO) throws NotAuthorizedToRemoveQuestionException {
+        questionAddAndRemoveService.removeQuestion(questionRequestDTO.getQuestions(), questionRequestDTO.getUser());
     }
 }

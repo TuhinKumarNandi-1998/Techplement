@@ -11,10 +11,10 @@ import java.util.List;
 public class UserController {
     private UserService userService;
 
-    UserController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
-    public void addUser(UserRequestDTO userRequestDTO) {
+    public void signUp(UserRequestDTO userRequestDTO) {
         Users users = new Users();
         users.setName(userRequestDTO.getName());
 

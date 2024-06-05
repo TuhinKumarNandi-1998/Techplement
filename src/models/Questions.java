@@ -6,6 +6,14 @@ public class Questions {
     private long id;
     private String question;
     private List<Options> options;
+    private Options correctAnswer;
+
+    public Options getCorrectAnswer() {
+        return correctAnswer;
+    }
+    public void setCorrectAnswer(Options correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 
     public long getId() {
         return id;

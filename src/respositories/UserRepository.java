@@ -16,8 +16,6 @@ public class UserRepository {
         i++;
     }
 
-
-
     //getting Users from DB
     public Users getUserFromDBUsingUserName(String name) {
         for (Map.Entry<Integer, Users> entry : userDB.entrySet()) {
@@ -28,6 +26,7 @@ public class UserRepository {
                 return users;
             }
         }
+
         return null;
     }
 
