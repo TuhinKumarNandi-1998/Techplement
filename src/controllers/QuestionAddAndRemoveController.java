@@ -3,6 +3,7 @@ package controllers;
 import dtos.QuestionRequestDTO;
 import exceptions.NotAuthorizedToAddQuestionException;
 import exceptions.NotAuthorizedToRemoveQuestionException;
+import exceptions.UserNotExistInDBException;
 import models.Options;
 import models.Questions;
 import services.QuestionAddAndRemoveService;
@@ -17,7 +18,7 @@ public class QuestionAddAndRemoveController {
         this.questionAddAndRemoveService = questionAddAndRemoveService;
     }
 
-    public void addQuestionAndOptions(QuestionRequestDTO questionRequestDTO) throws NotAuthorizedToAddQuestionException {
+    public void addQuestionAndOptions(QuestionRequestDTO questionRequestDTO) {
         String userName = questionRequestDTO.getUser();
 
         Questions questions = new Questions();
@@ -35,7 +36,15 @@ public class QuestionAddAndRemoveController {
         correctOption.setOption(questionRequestDTO.getCorrectAnswer());
         questions.setCorrectAnswer(correctOption);
 
-        questionAddAndRemoveService.addQuestionAndOptions(questions, userName);
+        try {
+            questionAddAndRemoveService.addQuestionAndOptions(questions, userName);
+        }
+        catch (UserNotExistInDBException exception1) {
+            System.out.println("*** User with name "+userName+" not present in DB. Question cannot be added. ***");
+        }
+        catch (NotAuthorizedToAddQuestionException exception2) {
+            System.out.println("*** User with name "+userName+" does not have necessary authorization to add question. Question cannot be added. ***");
+        }
     }
 
     public void removeQuestion(QuestionRequestDTO questionRequestDTO) throws NotAuthorizedToRemoveQuestionException {

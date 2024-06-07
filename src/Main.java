@@ -13,10 +13,15 @@ import services.QuizPlayService;
 import services.UserService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class Main {
-    public static void main(String[] args) throws NotAuthorizedToAddQuestionException, InterruptedException {
+    public static void main(String[] args) throws NotAuthorizedToAddQuestionException, InterruptedException, ExecutionException {
+        Scanner sc = new Scanner(System.in);
 
         //Instantiating The classes related to UserService
         UserRepository userRepository = new UserRepository();
@@ -38,19 +43,19 @@ public class Main {
         userRequestDTO1.setRoles(rolesList);
         userController.signUp(userRequestDTO1);
 
-        /**
+
         //user 2 ->
         UserRequestDTO userRequestDTO2 = new UserRequestDTO();
         userRequestDTO2.setName("Mriganka");
-        String role11 = "ADMIN";
+//        String role11 = "ADMIN";
         String role22 = "NORMAL_USER";
         List<String> rolesList1 = new ArrayList<>();
-        rolesList1.add(role11);
+//        rolesList1.add(role11);
         rolesList1.add(role22);
         userRequestDTO2.setRoles(rolesList1);
         userController.signUp(userRequestDTO2);
 
-        **/
+
 
         //Instantiating The classes related to QuestionService
         QuestionsRepository questionsRepository = new QuestionsRepository();
@@ -59,7 +64,7 @@ public class Main {
         QuestionAddAndRemoveService questionAddAndRemoveService = new QuestionAddAndRemoveService(questionsRepository, optionsRepository, userRepository);
         QuestionAddAndRemoveController questionAddAndRemoveController = new QuestionAddAndRemoveController(questionAddAndRemoveService);
 
-        //adding Questions and options to each questions
+        //adding system default Questions and options to each questions
 
         //Question - 1:
         QuestionRequestDTO questionRequestDTO1 = new QuestionRequestDTO();
@@ -126,11 +131,51 @@ public class Main {
         questionRequestDTO5.setCorrectAnswer("Mitochondrion");
         questionAddAndRemoveController.addQuestionAndOptions(questionRequestDTO5);
 
-      //System.out.println(questionsRepository.getQuestionFromDBUsingQuestion("What is the powerhouse of the cell?").getCorrectAnswer().getOption());
-
         QuizPlayService quizPlayService = new QuizPlayService(questionsRepository, optionsRepository);
         QuizPlayController quizPlayController = new QuizPlayController(quizPlayService);
 
-        quizPlayController.startQuiz();
+        System.out.println("*READ THE INSTRUCTIONS CAREFULLY*");
+        System.out.println("*ONLY ADMIN USERS CAN ADD QUESTIONS*");
+        System.out.println("Do you want to (add question / play quiz) ?");
+        String usersChoice = sc.nextLine();
+        String playQuiz = "NO";
+
+        //allowing user to add question
+        while (!usersChoice.equalsIgnoreCase("play quiz")) {
+            System.out.println("Enter your user : ");
+            String userName = sc.next();
+            sc.nextLine(); //consuming the newLine
+
+            System.out.println("Enter the Question : ");
+            String question = sc.nextLine();
+
+            System.out.println("Enter options (single comma separated) : ");
+            String userEnteredOptions = sc.nextLine();
+            List<String> optionsList = Arrays.stream(userEnteredOptions.split(","))
+                    .toList();
+
+            System.out.println("Enter the correct option : ");
+            String correctOption = sc.next();
+
+            QuestionRequestDTO questionRequestDTO = new QuestionRequestDTO();
+            questionRequestDTO.setUser(userName);
+            questionRequestDTO.setQuestions(question);
+            questionRequestDTO.setOptions(optionsList);
+            questionRequestDTO.setCorrectAnswer(correctOption);
+            questionAddAndRemoveController.addQuestionAndOptions(questionRequestDTO);
+
+            System.out.println("Do you want to enter more question? (YES/NO)");
+            String addingQuestion = sc.next();
+
+            if (addingQuestion.equalsIgnoreCase("NO")) {
+                System.out.println("Do you want to play quiz now?");
+                playQuiz = sc.next();
+                break;
+            }
+        }
+
+        if(usersChoice.equalsIgnoreCase("play quiz") || playQuiz.equalsIgnoreCase("YES")) {
+            quizPlayController.startQuiz();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package services;
 import exceptions.NotAuthorizedToAddQuestionException;
 import exceptions.NotAuthorizedToRemoveQuestionException;
+import exceptions.UserNotExistInDBException;
 import models.*;
 import respositories.OptionsRepository;
 import respositories.QuestionsRepository;
@@ -21,13 +22,17 @@ public class QuestionAddAndRemoveService {
         this.userRepository = userRepository;
     }
 
-    public void addQuestionAndOptions(Questions questions, String userName) throws NotAuthorizedToAddQuestionException {
+    public void addQuestionAndOptions(Questions questions, String userName) throws NotAuthorizedToAddQuestionException, UserNotExistInDBException {
         Users users = userRepository.getUserFromDBUsingUserName(userName);
+
+        if(users == null) {
+            throw new UserNotExistInDBException("User with name "+userName+" not present in DB.");
+        }
 
         boolean canAdd = false;
 
         for(Roles roles : users.getRoles()) {
-            if(roles.getRoleName().equals("ADMIN")) {
+            if(roles.getRoleName().equalsIgnoreCase("ADMIN")) {
                 canAdd = true;
             }
         }

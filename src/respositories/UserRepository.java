@@ -23,7 +23,7 @@ public class UserRepository {
             int key = entry.getKey();
             Users users = entry.getValue();
 
-            if(users.getName().equals(name)) {
+            if(users.getName().equalsIgnoreCase(name)) {
                 return users;
             }
         }

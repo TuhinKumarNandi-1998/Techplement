@@ -2,6 +2,8 @@ package controllers;
 
 import services.QuizPlayService;
 
+import java.util.concurrent.ExecutionException;
+
 public class QuizPlayController {
     private QuizPlayService quizPlayService;
 
@@ -9,7 +11,7 @@ public class QuizPlayController {
         this.quizPlayService = quizPlayService;
     }
 
-    public void startQuiz() throws InterruptedException {
+    public void startQuiz() throws InterruptedException, ExecutionException {
         System.out.println("Starting Quiz . . . .");
         quizPlayService.startQuiz();
     }

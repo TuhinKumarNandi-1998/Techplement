@@ -20,7 +20,7 @@ public class QuestionsRepository {
         List<Options> options = new ArrayList<>();
         int j=0;
         for (Options option : questions.getOptions()) {
-            option.setSequences((char) (97+j));
+            option.setSequences((char) (97+j)); //attaching sequences like a, b, c, d with each options for a question
             options.add(option);
             j++;
         }
@@ -40,7 +40,7 @@ public class QuestionsRepository {
             int key = entry.getKey();
             Questions questions = entry.getValue();
 
-            if(questions.getQuestion().equals(question)) {
+            if(questions.getQuestion().equalsIgnoreCase(question)) {
                 return questions;
             }
         }

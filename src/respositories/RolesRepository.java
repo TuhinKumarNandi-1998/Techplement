@@ -22,7 +22,7 @@ public class RolesRepository {
             int key = entry.getKey();
             Roles roles = entry.getValue();
 
-            if(roles.getRoleName().equals(role)) {
+            if(roles.getRoleName().equalsIgnoreCase(role)) {
                 return roles;
             }
         }

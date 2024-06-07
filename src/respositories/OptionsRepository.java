@@ -25,7 +25,7 @@ public class OptionsRepository {
             int key = entry.getKey();
             Options options = entry.getValue();
 
-            if(options.getOption().equals(option)) {
+            if(options.getOption().equalsIgnoreCase(option)) {
                 return options;
             }
         }

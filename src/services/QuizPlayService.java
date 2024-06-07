@@ -8,12 +8,14 @@ import respositories.QuestionsRepository;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class QuizPlayService {
     private QuestionsRepository questionsRepository;
     private OptionsRepository optionsRepository;
     private Scanner scanner;
     private Scores scores;
+
 
     public QuizPlayService(QuestionsRepository questionsRepository,
                            OptionsRepository optionsRepository) {
@@ -23,7 +25,7 @@ public class QuizPlayService {
         this.scores = new Scores();
     }
 
-    public void startQuiz() throws InterruptedException {
+    public void startQuiz() throws InterruptedException, ExecutionException {
         int i = 1;
         while(questionsRepository.getQuestion1By1(i) != null) {
             Questions questions = questionsRepository.getQuestion1By1(i);
@@ -35,10 +37,10 @@ public class QuizPlayService {
             for (Options option: options) {
                 System.out.println(option.getSequences()+". "+option.getOption());
             }
-            //startTimer();
 
-            char userGivenAnswer = scanner.next().charAt(0);
             //user need to give answer
+            char userGivenAnswer = scanner.next().charAt(0);
+
             if(checkIfCorrect(questions, userGivenAnswer)) {
                 //increase the score by +2
                 scores.increaseScore(2);
@@ -52,12 +54,18 @@ public class QuizPlayService {
                 System.out.println();
                 continue;
             }
-
             System.out.println();
             i++;
         }
 
+        if(scores.getScore() == scores.getTotalScore()) {
+            System.out.println("Congratulations!!");
+        }
         System.out.println("Your Total Score is : "+scores.getScore()+" out of "+scores.getTotalScore()+".");
+    }
+
+    public void endQuiz() {
+        System.out.println(" Time is up!!");
     }
 
     public boolean checkIfCorrect(Questions questions, char userGivenAnswer) {
@@ -74,14 +82,5 @@ public class QuizPlayService {
             }
         }
         return false;
-    }
-
-    public void startTimer() throws InterruptedException {
-        int seconds = 10;  // Set the countdown time in seconds
-
-        for (int i = seconds; i >= 0; i--) {
-            System.out.print("\rTime remaining: " + i + " seconds");
-            Thread.sleep(1000);  // Sleep for 1 second
-        }
     }
 }
