@@ -28,7 +28,7 @@ This project implements a simple Quiz Generator. User(who has ADMIN role) can ad
 
 
 - **Main**
-    - `Main.java`: Sets up the game, instantiate the Models, Controller, Service and starts it. Added some questions by harding coding, user can also add questions and play the quiz.
+    - `Main.java`: Sets up the game, instantiate the Models, Controller, Service, Repositories and starts it. Added some questions by harding coding, user can also add questions and play the quiz.
 
 
 ## Requirements
