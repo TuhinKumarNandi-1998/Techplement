@@ -39,6 +39,7 @@ public class QuizPlayService {
             }
 
             //user need to give answer
+            System.out.println("Enter your answer (just enter the option) :");
             char userGivenAnswer = scanner.next().charAt(0);
 
             if(checkIfCorrect(questions, userGivenAnswer)) {
