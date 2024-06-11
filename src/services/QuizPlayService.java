@@ -65,10 +65,6 @@ public class QuizPlayService {
         System.out.println("Your Total Score is : "+scores.getScore()+" out of "+scores.getTotalScore()+".");
     }
 
-    public void endQuiz() {
-        System.out.println(" Time is up!!");
-    }
-
     public boolean checkIfCorrect(Questions questions, char userGivenAnswer) {
 
         //need to compare it with the correct option
@@ -77,6 +73,8 @@ public class QuizPlayService {
 
         for (Options option : optionsList) {
             String currOption = option.getOptionFromSeq(userGivenOption);
+
+//            System.out.println(questions.getCorrectAnswer().getOption());
             if (currOption.equals(questions.getCorrectAnswer().getOption())) {
                 System.out.println(currOption+" is correct answer!!.");
                 return true;

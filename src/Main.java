@@ -155,7 +155,7 @@ public class Main {
                     .toList();
 
             System.out.println("Enter the correct option : ");
-            String correctOption = sc.next();
+            String correctOption = sc.nextLine();
 
             QuestionRequestDTO questionRequestDTO = new QuestionRequestDTO();
             questionRequestDTO.setUser(userName);
@@ -164,11 +164,13 @@ public class Main {
             questionRequestDTO.setCorrectAnswer(correctOption);
             questionAddAndRemoveController.addQuestionAndOptions(questionRequestDTO);
 
+//            sc.nextLine();
+
             System.out.println("Do you want to enter more question? (YES/NO)");
             String addingQuestion = sc.next();
 
             if (addingQuestion.equalsIgnoreCase("NO")) {
-                System.out.println("Do you want to play quiz now?");
+                System.out.println("Do you want to play quiz now? (YES/NO)");
                 playQuiz = sc.next();
                 break;
             }
